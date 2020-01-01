@@ -34,8 +34,24 @@ var createOne = model => async (req, res) => {
   }
 };
 
+var removeOne = model => async (req, res) => {
+  try {
+    const removed = await model.findByIdAndRemove(req.params.id);
+
+    if (!removed) {
+      return res.status(400).end();
+    }
+
+    return res.status(200).json(removed);
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+};
+
 module.exports = model => ({
   getOne: getOne(model),
   getMany: getMany(model),
-  createOne: createOne(model)
+  createOne: createOne(model),
+  removeOne: removeOne(model)
 });

@@ -7,6 +7,9 @@ router
   .get(controller.getMany)
   .post(controller.createOne);
 
-router.route('/:id').get(controller.getOne);
+router
+  .route('/:id')
+  .get(controller.getOne)
+  .delete(controller.removeOne);
 
 module.exports = router;
