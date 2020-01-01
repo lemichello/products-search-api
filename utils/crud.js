@@ -9,7 +9,7 @@ var getOne = model => async (req, res) => {
     return res.json(doc);
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    return res.status(400).end();
   }
 };
 
@@ -20,7 +20,7 @@ var getMany = model => async (req, res) => {
     return res.json(docs);
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    return res.status(400).end();
   }
 };
 
@@ -30,22 +30,24 @@ var createOne = model => async (req, res) => {
     return res.status(201).json(doc);
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    return res.status(400).end();
   }
 };
 
 var removeOne = model => async (req, res) => {
   try {
-    const removed = await model.findByIdAndRemove(req.params.id);
+    const removed = await model.findByIdAndRemove(req.params.id, {
+      useFindAndModify: false
+    });
 
     if (!removed) {
-      return res.status(400).end();
+      return res.status(404).end();
     }
 
     return res.status(200).json(removed);
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    return res.status(400).end();
   }
 };
 
